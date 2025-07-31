@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useMemo } from 'react';
 import { assets, facilityIcons, roomsDummyData } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
