@@ -90,9 +90,66 @@ export const exclusiveOffers = [
 
 // Testimonials Dummy Data
 export const testimonials = [
-    { id: 1, name: "Emma Rodriguez", address: "Barcelona, Spain", image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200", rating: 5, review: "I've used many booking platforms before, but none compare to the personalized experience and attention to detail that QuickStay provides." },
-    { id: 2, name: "Liam Johnson", address: "New York, USA", image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200", rating: 4, review: "QuickStay exceeded my expectations. The booking process was seamless, and the hotels were absolutely top-notch. Highly recommended!" },
-    { id: 3, name: "Sophia Lee", address: "Seoul, South Korea", image: "https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=200", rating: 5, review: "Amazing service! I always find the best luxury accommodations through QuickStay. Their recommendations never disappoint!" }
+  {
+    id: 1,
+    name: 'Emma Rodriguez',
+    address: 'Barcelona, Spain',
+    image:
+      'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200',
+    rating: 5,
+    review:
+      "I've used many booking platforms before, but none compare to the personalized experience and attention to detail that QuickStay provides.",
+  },
+  {
+    id: 2,
+    name: 'Liam Johnson',
+    address: 'New York, USA',
+    image:
+      'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200',
+    rating: 4,
+    review:
+      'QuickStay exceeded my expectations. The booking process was seamless, and the hotels were absolutely top-notch. Highly recommended!',
+  },
+  {
+    id: 3,
+    name: 'Sophia Lee',
+    address: 'Seoul, South Korea',
+    image:
+      'https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=200',
+    rating: 5,
+    review:
+      'Amazing service! I always find the best luxury accommodations through QuickStay. Their recommendations never disappoint!',
+  },
+  {
+    id: 4,
+    name: 'Noah Becker',
+    address: 'Berlin, Germany',
+    image:
+      'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=200',
+    rating: 4,
+    review:
+      'QuickStay helped me find a great last-minute stay in Berlin. The process was fast, smooth, and stress-free!',
+  },
+  {
+    id: 5,
+    name: 'Ava Martins',
+    address: 'Lisbon, Portugal',
+    image:
+      'https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=200',
+    rating: 5,
+    review:
+      'I love how intuitive QuickStay is. The design, the suggestions, and the seamless booking made my vacation perfect.',
+  },
+  {
+    id: 6,
+    name: 'Ethan Patel',
+    address: 'Mumbai, India',
+    image:
+      'https://images.unsplash.com/photo-1573497491208-6b1acb260507?q=80&w=200',
+    rating: 3,
+    review:
+      'QuickStay was good, but I wish there were more budget-friendly options in busy cities like Mumbai, Dubai and Egypt.',
+  },
 ];
 
 // Facility Icon

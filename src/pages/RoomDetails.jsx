@@ -1,23 +1,73 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   assets,
   facilityIcons,
   roomCommonData,
   roomsDummyData,
+  userDummyData,
 } from '../assets/assets';
 import StarRating from '../components/StarRating';
+import { useBookings } from '../context/BookingContext';
 
 const RoomDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { addBooking } = useBookings();
   const [room, setRoom] = useState(null);
   const [mainImage, setmainImage] = useState(null);
+  const [isBooking, setIsBooking] = useState(false);
 
   useEffect(() => {
     const room = roomsDummyData.find((room) => room._id === id);
     room && setRoom(room);
     room && setmainImage(room.images[0]);
   }, [id]);
+
+  const handleBookRoom = async (e) => {
+    e.preventDefault();
+    setIsBooking(true);
+
+    const formData = new FormData(e.target);
+    const checkInDate = formData.get('checkInDate');
+    const checkOutDate = formData.get('checkOutDate');
+    const guests = Number.parseInt(formData.get('guests'));
+
+    if (!checkInDate || !checkOutDate || !guests) {
+      alert('Please fill in all fields');
+      setIsBooking(false);
+      return;
+    }
+
+    // Calculate total price based on nights
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+    const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+    const totalPrice = room.pricePerNight * nights;
+
+    // Simulate booking process
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const bookingData = {
+      user: userDummyData,
+      room: room,
+      hotel: room.hotel,
+      checkInDate: checkInDate,
+      checkOutDate: checkOutDate,
+      totalPrice: totalPrice,
+      guests: guests,
+      status: 'confirmed',
+      paymentMethod: 'Credit Card',
+      isPaid: true,
+      bookingType: 'room',
+    };
+
+    addBooking(bookingData);
+    setIsBooking(false);
+
+    // Redirect to my bookings page
+    navigate('/my-bookings');
+  };
 
   return (
     room && (
@@ -31,23 +81,21 @@ const RoomDetails = () => {
             20% OFF
           </p>
         </div>
-
         <div className='flex items-center gap-1 mt-2'>
           <StarRating />
           <p className='ml-2'>200+ reviews </p>
         </div>
         <div className='flex items-center gap-1 text-gray-500 mt-2'>
           <img
-            src={assets.locationIcon}
+            src={assets.locationIcon || '/placeholder.svg'}
             alt='location icon'
           />
           <span>{room.hotel.address}</span>
         </div>
-
         <div className='flex flex-col lg:flex-row mt-6 gap-6'>
           <div className='lg:w-1/2 w-full'>
             <img
-              src={mainImage}
+              src={mainImage || '/placeholder.svg'}
               alt='room image'
               className='w-full rounded-xl shadow-lg object-cover'
             />
@@ -56,7 +104,7 @@ const RoomDetails = () => {
             {room?.images.length > 1 &&
               room.images.map((image, index) => (
                 <img
-                  src={image}
+                  src={image || '/placeholder.svg'}
                   alt='image'
                   key={index}
                   onClick={() => setmainImage(image)}
@@ -79,7 +127,7 @@ const RoomDetails = () => {
                   className='flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100'
                 >
                   <img
-                    src={facilityIcons[item]}
+                    src={facilityIcons[item] || '/placeholder.svg'}
                     alt='icon'
                     className='w-5 h-5'
                   />
@@ -90,11 +138,14 @@ const RoomDetails = () => {
           </div>
           <p className='text-2xl font-medium'>${room.pricePerNight}/night</p>
         </div>
-
         {/* check-in and check out  */}
-        <form className='flex flex-col md:flex-row items-start md:items-center justify-between bg-white shadow-[0px_0px_20px_rgba(0,0,0,0.15)] p-6 rounded-xl mx-auto mt-16 max-w-6xl '>
-          <div className='flex flex-col flex-wrap md:flex-row items-start md:items-center gap-4 md:gap-10 text-gray-500'>
-            <div className='flex flex-col'>
+        <form
+          onSubmit={handleBookRoom}
+          className='flex flex-col md:flex-col lg:flex-row gap-4 bg-white shadow-[0px_0px_20px_rgba(0,0,0,0.15)] p-6 rounded-xl mx-auto mt-16 max-w-6xl text-gray-500'
+        >
+          <div className='flex flex-col md:flex-row gap-4 md:gap-6 flex-wrap w-full'>
+            {/* Check-In */}
+            <div className='flex flex-col flex-1 min-w-[150px]'>
               <label
                 htmlFor='checkInDate'
                 className='font-medium'
@@ -104,15 +155,14 @@ const RoomDetails = () => {
               <input
                 type='date'
                 id='checkInDate'
-                placeholder='Check-In'
-                className='w-full rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none'
+                name='checkInDate'
+                className='rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none w-full'
                 required
               />
             </div>
 
-            <div className='w-px h-15 bg-gray-300/70 max-md:hidden'></div>
-
-            <div className='flex flex-col'>
+            {/* Check-Out */}
+            <div className='flex flex-col flex-1 min-w-[150px]'>
               <label
                 htmlFor='checkOutDate'
                 className='font-medium'
@@ -122,15 +172,14 @@ const RoomDetails = () => {
               <input
                 type='date'
                 id='checkOutDate'
-                placeholder='Check-Out'
-                className='w-full rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none'
+                name='checkOutDate'
+                className='rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none w-full'
                 required
               />
             </div>
 
-            <div className='w-px h-15 bg-gray-300/70 max-md:hidden'></div>
-
-            <div className='flex flex-col'>
+            {/* Guests */}
+            <div className='flex flex-col flex-1 min-w-[150px]'>
               <label
                 htmlFor='guests'
                 className='font-medium'
@@ -140,17 +189,21 @@ const RoomDetails = () => {
               <input
                 type='number'
                 id='guests'
-                placeholder='0'
-                className='max-w-20 rounded border-gray-300 px-3 py-2 mt-1.5 outline-none'
+                name='guests'
+                min='1'
+                className='rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none w-full'
                 required
               />
             </div>
           </div>
+
+          {/* Submit Button */}
           <button
             type='submit'
-            className='bg-primary hover:bg-primary-dull active:scale-95 transition-all text-white rounded-md max-md:w-full max-md:mt-6 md:px-25 py-3 md:py-4 text-base cursor-pointer'
+            disabled={isBooking}
+            className='bg-primary hover:bg-primary-dull active:scale-95 transition-all text-white rounded-md py-3 px-6 w-full lg:w-auto disabled:opacity-50 disabled:cursor-not-allowed'
           >
-            Check Availability
+            {isBooking ? 'Booking...' : 'Book Room'}
           </button>
         </form>
 
@@ -161,7 +214,7 @@ const RoomDetails = () => {
               className='flex items-start gap-2'
             >
               <img
-                src={spec.icon}
+                src={spec.icon || '/placeholder.svg'}
                 alt={`${spec.title}-icon`}
                 className='w-6.5'
               />
@@ -183,15 +236,13 @@ const RoomDetails = () => {
             a true city feeling.
           </p>
         </div>
-
         <div className='flex flex-col items-start gap-4'>
           <div className='flex gap-4'>
             <img
-              src={room.hotel.owner.image}
+              src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200'
               alt='host'
               className='h-14 w-14 md:h-18 md:w-18 rounded-full'
             />
-
             <div>
               <p className='text-lg md:text-xl'>Hosted by {room.hotel.name}</p>
               <div className='flex items-center mt-1'>
