@@ -125,14 +125,14 @@ const Navbar = () => {
       {/* Desktop Nav */}
       <div className="hidden md:flex items-center gap-4 lg:gap-8">
         {navLinks.map((link, i) => (
-          <a
+          <Link
             key={i}
             href={link.path}
             className={`group flex flex-col gap-0.5 transition-colors duration-500 ${styles.text}`}
           >
             {link.name}
             <div className={`h-0.5 w-0 group-hover:w-full transition-all duration-300 ${styles.underline}`} />
-          </a>
+          </Link>
         ))}
       </div>
 
