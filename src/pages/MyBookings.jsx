@@ -1,6 +1,7 @@
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
 import { useBookings } from '../context/BookingContext';
+import { Link } from 'react-router-dom';
 
 const MyBookings = () => {
   const { bookings } = useBookings();
@@ -38,12 +39,12 @@ const MyBookings = () => {
               booking!
             </p>
             <div className='flex gap-4 justify-center'>
-              <a
-                href='/rooms'
+              <Link
+                to='/rooms'
                 className='px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
               >
                 Browse Rooms
-              </a>
+              </Link>
               <a
                 href='/#offers'
                 className='px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:border-gray-400 transition-colors'
